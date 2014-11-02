@@ -431,8 +431,9 @@ class CourseraDownloader(object):
                 clsdirname = str(i).zfill(2) + " - " + className
 
                 # ensure the class dir exists
-                clsdir = path.join(wkdir, clsdirname)
-
+                #clsdir = path.join(wkdir, clsdirname)
+                clsdir = wkdir
+                
                 if not path.exists(clsdir):
                     os.makedirs(clsdir)
 
@@ -440,11 +441,12 @@ class CourseraDownloader(object):
 
                 # download each resource
                 for classResource,tfname in classResources:
-                    try:
-                       #print '  - Downloading ', classResource
-                       self.download(classResource,target_dir=clsdir,target_fname=tfname)
-                    except Exception as e:
-                       print "    - failed: ",classResource,e
+                    if tfname.find('pptx') < 0:
+                        try:
+                           #print '  - Downloading ', classResource
+                           self.download(classResource,target_dir=clsdir,target_fname=tfname)
+                        except Exception as e:
+                           print "    - failed: ",classResource,e
 
         if gzip_courses:
             tar_file_name = cname + ".tar.gz"
