@@ -441,12 +441,11 @@ class CourseraDownloader(object):
 
                 # download each resource
                 for classResource,tfname in classResources:
-                    if tfname.find('pptx') < 0:
-                        try:
-                           #print '  - Downloading ', classResource
-                           self.download(classResource,target_dir=clsdir,target_fname=tfname)
-                        except Exception as e:
-                           print "    - failed: ",classResource,e
+                    try:
+                        #print '  - Downloading ', classResource
+                        self.download(classResource,target_dir=clsdir,target_fname=tfname)
+                    except Exception as e:
+                        print "    - failed: ",classResource,e
 
         if gzip_courses:
             tar_file_name = cname + ".tar.gz"
