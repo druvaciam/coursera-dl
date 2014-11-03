@@ -85,6 +85,7 @@ class CourseraDownloader(object):
         """
         hn,fn = tempfile.mkstemp()
         cookies = cookielib.LWPCookieJar()
+        
         handlers = [
             urllib2.HTTPHandler(),
             urllib2.HTTPSHandler(),
@@ -100,15 +101,16 @@ class CourseraDownloader(object):
 
         url = self.lecture_url_from_name(className)
         req = urllib2.Request(url)
-
+        print className, url
+        
         try:
             res = opener.open(req)
         except urllib2.HTTPError as e:
             if e.code == 404:
                 raise Exception("Unknown class %s" % className)
-
+        
         # get the csrf token
-        csrfcookie = [c for c in cookies if c.name == "csrf_token"]
+        csrfcookie = [c for c in cookies if c.name == "csrf_token"] 
         if not csrfcookie: raise Exception("Failed to find csrf cookie")
         csrftoken = csrfcookie[0].value
         opener.close()
@@ -343,6 +345,7 @@ class CourseraDownloader(object):
 
         try:
             if dl:
+                print '    - downloading "%s", file size: %s kb ' % (fname, clen / 1024)
                 self.browser.retrieve(url,filepath,timeout=self.TIMEOUT)
         except Exception as e:
             print "Failed to download url %s to %s: %s" % (url,filepath,e)
